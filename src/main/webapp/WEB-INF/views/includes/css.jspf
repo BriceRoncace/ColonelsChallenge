@@ -1,0 +1,5 @@
+<link href='<c:url value="/style/datetimepicker.css"/>' rel="stylesheet" type="text/css" />
+<link href='<c:url value="/style/main.css"/>' rel="stylesheet" type="text/css" />
+<link href='<c:url value="/js/datatables/css/jquery.dataTables.min.css"/>' rel="stylesheet" type="text/css" />
+<link href='<c:url value="/js/datatables/css/jquery.dataTables.tableTools.min.css"/>' rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css' />

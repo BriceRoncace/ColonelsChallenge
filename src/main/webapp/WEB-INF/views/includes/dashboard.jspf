@@ -1,0 +1,71 @@
+<div class="row" style="margin:0">
+  <h2 class="center-block">${participant.firstName}${fn:endsWith(participant.firstName, 's') ? '\'' :'\'s'} Dashboard
+    <span id="badge-container"></span>
+  </h2>
+</div>
+<hr/>
+  
+<div class="row">
+  <div class="pull-right">
+    <a href="<c:url value="/toEntry.html"/>?emp=${participant.isEmployee() ? "true" : "false"}" class="btn btn-warning">Enter Training</a>
+  </div>
+</div>
+
+<%@include file="progress-graphs.jspf" %>
+<hr/>
+
+<div class="row">
+  <c:choose>
+    <c:when test="${empty participant.getFitnessLog(challengeYear)}">
+      <h3>Hello, ${participant.firstName}!  It looks like you need to enter some training.</h3>
+    </c:when>
+    <c:otherwise>
+      <table class="table table-hover table-condensed col-lg-12 data-table">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Title</th>
+            <th>Time (distance)</th>
+            <th>Weight</th>
+            <th>Reps</th>
+            <th class="no-sort"/>
+            <th class="no-sort"/>
+          </tr>
+        </thead>
+        <tbody>
+        <c:forEach var="entry" items="${participant.getFitnessLog(challengeYear)}">
+          <tr>
+            <td><fmt:formatDate value="${entry.activityDateAsUtilDate}" pattern="${dateFormat}" /></td>
+            <td>${entry.exerciseType.label}</td>
+            <td>
+              <c:choose>
+                <c:when test="${fn:length(entry.title) > 50}">
+                  ${fn:substring(entry.title,0,50)} ...
+                </c:when>
+                <c:otherwise>
+                  ${entry.title}
+                </c:otherwise>
+              </c:choose>
+            <td>${entry.hasTime() ? entry.formattedTime : '-'} <c:if test="${entry.distance != null && entry.distance != 0}">(${entry.distance} miles)</c:if> </td>
+            <td>
+              <c:choose>
+                <c:when test="${entry.totalWeight != null}"><fmt:formatNumber value="${entry.totalWeight}"/></c:when>
+                <c:otherwise>-</c:otherwise>
+              </c:choose>
+            </td>
+            <td>
+              <c:choose>
+                <c:when test="${entry.reps != null}"><fmt:formatNumber value="${entry.reps}"/></c:when>
+                <c:otherwise>-</c:otherwise>
+              </c:choose>
+            </td>
+            <td><a href="<c:url value="/viewEntry.html"/>?id=${entry.id}" title="view"><span class="glyphicon glyphicon-arrow-right"></span></a></td>
+            <td><a href="<c:url value="/deleteEntry.html"/>?id=${entry.id}&employee=${participant.isEmployee()}" class="confirm" data-confirm-title="Delete Training Entry?" data-confirm-text="Are you sure you would like to delete this training entry?" title="delete"><span class="glyphicon glyphicon-remove"></span></a></td>
+          </tr>
+        </c:forEach>
+        </tbody>
+      </table>   
+    </c:otherwise>
+  </c:choose>
+</div>

@@ -1,0 +1,81 @@
+@import "bootstrap-3.2.0/bootstrap-3.2.0.less";
+@import "variables.less";
+
+body {
+  background-color: @body-color;
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  font-size: 16px;
+  color: #555;
+  
+  -webkit-font-smoothing: antialiased;
+  -webkit-overflow-scrolling: touch;
+}
+
+#banner a {
+  background:#000;
+  color:#fff;
+  text-decoration:none;
+  text-align:center;
+  font-weight:bold;
+  padding:5px 40px;
+  font-size:1.3rem;
+  line-height:2rem;
+  position:relative;
+  transition:0.5s;
+}
+
+/*https://codepo8.github.io/css-fork-on-github-ribbon/*/
+#banner a:hover{background:#c11;color:#fff;}
+
+#banner a::before, #banner a::after{content:"";width:100%;display:block;position:absolute;top:1px;left:0;height:1px;background:#fff;}
+
+#banner a::after{bottom:1px;top:auto;}
+
+@media screen and (min-width:800px) {
+  #banner {position:fixed;display:block;top:0;right:0;width:200px;overflow:hidden;height:200px;z-index:9999;}
+  #banner a{width:260px;position:absolute;top:60px;right:-60px;transform:rotate(45deg);-webkit-transform:rotate(45deg);-ms-transform:rotate(45deg);-moz-transform:rotate(45deg);-o-transform:rotate(45deg);box-shadow:4px 4px 10px rgba(0,0,0,0.8);}
+}
+
+.navbar-default {
+	background-color: @nav-color;
+	border-color: transparent;
+}
+
+.navbar-default .navbar-brand {
+	color: white;
+}
+
+.navbar-default .navbar-nav > li > a {
+	color: white;
+}
+
+#main-container {
+  margin-top:60px;
+}
+
+.required:before { 
+  color: #e32;
+  content: '* ';
+  display:inline;
+}
+
+.post-chart {
+  display:block;
+  margin-top:-40px;
+  text-align: center;
+}
+
+.tab-pane {
+  margin-top:10px;
+}
+
+.badge-description {
+  display:block;
+  margin-top:8px;
+}
+
+.badges-awarded {
+  color: #3E9B76;
+  font-size: .9em;
+}

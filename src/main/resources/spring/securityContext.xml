@@ -1,0 +1,38 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+           http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
+
+
+  <!-- public resources -->
+  <security:http pattern="/login.html" security="none"/>
+  <security:http pattern="/loginStats.json" security="none"/>
+  <security:http pattern="/login-failed.html" security="none"/>
+  <security:http pattern="/images/**" security="none"/>
+  <security:http pattern="/style/**" security="none"/>
+  <security:http pattern="/fonts/**" security="none"/>
+  <security:http pattern="/js/**" security="none"/>
+  
+  <security:http use-expressions="true">
+    <!-- admin only -->
+    <security:intercept-url pattern="/results.html" access="hasRole('ADMIN')" />
+    <security:intercept-url pattern="/spouseResults.html" access="hasRole('ADMIN')" />
+    
+    <!-- everything else requires employee -->
+    <security:intercept-url pattern="/**" access="hasAnyRole('EMPLOYEE')" />
+    <security:form-login login-page="/login.html" authentication-failure-url="/login-failed.html" default-target-url="/dashboard.html" always-use-default-target="false"/>
+  </security:http>
+  
+  <security:authentication-manager>
+    <!-- authenticate against active directory -->
+    <security:ldap-authentication-provider
+      user-search-base="OU=ISP Users OU"
+      user-search-filter="sAMAccountName={0}"
+      group-search-base="OU=App-Dev OU"
+      group-search-filter="member={0}"
+      user-context-mapper-ref="customLdapUserMapper"
+    />
+  </security:authentication-manager>
+
+</beans>

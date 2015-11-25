@@ -1,0 +1,44 @@
+<div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel"><span id="confirm-title"></span></h4>
+      </div>
+      <div class="modal-body">
+        <p><span id="confirm-text"></span></p>
+      </div>
+      <div class="modal-footer">
+        <input type="hidden" id="confirm-href">
+        <button class="btn btn-danger" id="yesConfirm">Yes</button>
+        <button class="btn" data-dismiss="modal" aria-hidden="true">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+$(function() {
+  $(".confirm").on("click", function (e) {
+    e.preventDefault();
+    var href = $(this).attr('href');
+    var title = $(this).data('confirm-title');
+    var text = $(this).data('confirm-text');
+    showConfirmModal(href, title, text);
+  });
+
+  function showConfirmModal(href, title, text) {
+    title = title || "Are you sure?";
+    text = text || "This action may be irreversible. Are you sure you would like to continue?";
+    
+    $("#confirm-href").val(href);
+    $("#confirm-title").html(title);
+    $(".modal-body #confirm-text").html(text);
+    $("#confirm-modal").modal('show');
+  }
+
+  $("#yesConfirm").on("click", function() {
+    window.location.href = $("#confirm-href").val();
+  });
+});
+</script>

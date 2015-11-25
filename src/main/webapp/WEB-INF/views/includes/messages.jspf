@@ -1,0 +1,17 @@
+<div id="action-messages" class="hidden-print">
+  <c:if test="${messages != null && !empty messages}">
+    <div class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button>
+      <c:forEach items="${messages}" var="message" varStatus="s">
+        ${message} ${not s.last ? '<br/>' : ''}
+      </c:forEach>
+    </div> 
+  </c:if>
+
+  <c:if test="${errors != null && !empty errors}">
+    <div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert">&times;</button>
+      <c:forEach items="${errors}" var="error" varStatus="s">
+        ${error} ${not s.last ? '<br/>' : ''}
+      </c:forEach>
+    </div>
+  </c:if>
+</div>

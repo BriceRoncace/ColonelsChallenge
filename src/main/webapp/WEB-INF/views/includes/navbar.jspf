@@ -1,0 +1,68 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<div class="navbar navbar-default navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <c:if test="${currentUser != null}">
+        <a href="dashboard.html" class="navbar-brand"><b>Welcome ${currentUser.firstName}</b></a>
+      </c:if>
+    </div>
+    <ul class="nav navbar-nav navbar-right">
+      <li><a href="<c:url value="/dashboard.html"/>?challengeYear=${challengeYear}" class="btn">Home</a></li>
+      
+      <sec:authorize access="isAuthenticated()">
+        <c:choose>
+          <c:when test="${currentUser.spouse == null}">
+            <li><a href="<c:url value="/toSpouseSetup.html"/>" class="btn">Add Spouse</a></li>
+          </c:when>
+          <c:otherwise>
+            <li><a href="<c:url value="/spouseDashboard.html"/>?challengeYear=${challengeYear}" class="btn">${currentUser.spouse.firstName}${fn:endsWith(currentUser.spouse.firstName, 's') ? '\'' :'\'s'} Dashboard</a></li>
+          </c:otherwise>
+        </c:choose>
+        
+        <li><a id="account-link" href="<c:url value="/setup.html"/>" class="btn">Account</a></li>
+        
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle btn" data-toggle="dropdown" role="button" aria-expanded="false">Results <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="<c:url value="/overviewStats.html"/>?employeeId=${currentUser.id}&challengeYear=${challengeYear}">Overview Statistics</a></li>
+            <li><a href="<c:url value="/customStats.html"/>?challengeYear=${challengeYear}">Custom Statistics</a></li>
+            <li><a href="<c:url value="/leaderboardStats.html"/>?challengeYear=${challengeYear}">Leaderboard</a></li>
+            <sec:authorize access="hasRole('ADMIN')">
+              <li><a href="<c:url value="/results.html"/>?challengeYear=${challengeYear}">Raw Results</a></li>  
+            </sec:authorize>  
+          </ul>
+        </li>
+          
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle btn" data-toggle="dropdown" role="button" aria-expanded="false">View <span class="caret"></span></a>
+          <ul class="dropdown-menu" role="menu">
+            <li><a href="<c:url value="/dashboard.html"/>?challengeYear=Y2015"><span class="glyphicon glyphicon-ok ${challengeYear.label == '2015' ? '' : 'invisible'}"></span> 2015 Challenge</a></li>
+            <li><a href="<c:url value="/dashboard.html"/>?challengeYear=Y2014"><span class="glyphicon glyphicon-ok ${challengeYear.label == '2014' ? '' : 'invisible'}"></span> 2014 Challenge</a></li>
+          </ul>
+        </li>
+        
+        <li><a href="<c:url value="/logout.html"/>" class="btn">Logout</a></li>
+      </sec:authorize>
+    </ul>
+  </div>
+</div>
+      
+<div class="modal fade" id="previousChallenges" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Previous Challenge Years</h4>
+      </div>
+      <div class="modal-body">
+        <p>Click on a previous challenge year to view results from that year.</p>
+        <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> <a href="<c:url value="/dashboard.html"/>?challengeYear=Y2014">2014</a>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

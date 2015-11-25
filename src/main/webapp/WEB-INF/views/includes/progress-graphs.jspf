@@ -1,0 +1,62 @@
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+      google.load("visualization", "1", {packages:["corechart"]});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+
+        var situpPushupData = google.visualization.arrayToDataTable([
+          ['label', 'reps'],
+          ['Completed',  ${participant.getTotalSitupsPushups(challengeYear)}],
+          ['To do', ${participant.getTargetSitupsPushups(challengeYear) - participant.getTotalSitupsPushups(challengeYear) > 0 ? participant.getTargetSitupsPushups(challengeYear) - participant.getTotalSitupsPushups(challengeYear) : 0}]
+        ]);
+
+        var resistanceData = google.visualization.arrayToDataTable([
+          ['label', 'pounds'],
+          ['Completed',  ${participant.getTotalWeight(challengeYear)}],
+          ['To do', ${participant.getWeightTarget(challengeYear) - participant.getTotalWeight(challengeYear) > 0 ? participant.getWeightTarget(challengeYear) - participant.getTotalWeight(challengeYear) : 0}]
+        ]);
+
+        var aerobicData = google.visualization.arrayToDataTable([
+          ['label', 'hours'],
+          ['Completed',  ${participant.getTotalAerobicHours(challengeYear)}],
+          ['To do', ${participant.getTargetAerobicHours(challengeYear) - participant.getTotalAerobicHours(challengeYear) > 0 ? participant.getTargetAerobicHours(challengeYear) - participant.getTotalAerobicHours(challengeYear) : 0}]
+        ]);
+
+        var chartOptions = {
+          title: 'Situps/Pushups',
+          backgroundColor: { fill:'transparent' },
+          is3D: true,
+          legend: {position: 'top', textStyle: {fontSize: 10}},
+          colors:['#3498db', '#b3bfbf']
+        };
+
+        chartOptions.title = 'Situps/Pushups'
+        var situpsPushups = new google.visualization.PieChart(document.getElementById('situpsPushups-chart'));
+        situpsPushups.draw(situpPushupData, chartOptions);
+
+        chartOptions.title = 'Resistance'
+        var resistance = new google.visualization.PieChart(document.getElementById('resistance-chart'));
+        resistance.draw(resistanceData, chartOptions);
+
+        chartOptions.title = 'Aerobic / High Intensity'
+        var aerobic = new google.visualization.PieChart(document.getElementById('aerobic-chart'));
+        aerobic.draw(aerobicData, chartOptions);
+      }
+    </script>
+
+    <div class="row">
+      <div class="col-lg-10 col-lg-offset-2">
+        <div class="col-sm-3">
+          <div id="situpsPushups-chart" style="width: 220px; height: 225px;"></div>
+          <span class="post-chart"><fmt:formatNumber value="${participant.getTotalSitupsPushups(challengeYear)}"/> reps<br/>Goal: <fmt:formatNumber value="${participant.getTargetSitupsPushups(challengeYear)}"/> reps</span>
+        </div>
+        <div class="col-sm-3">
+          <div id="resistance-chart" style="width: 220px; height: 225px;"></div>
+          <span class="post-chart"><fmt:formatNumber value="${participant.getTotalWeight(challengeYear)}"/> lbs<br/>Goal: <fmt:formatNumber value="${participant.getWeightTarget(challengeYear)}"/> lbs</span>
+        </div>
+        <div class="col-sm-3">
+          <div id="aerobic-chart" style="width: 220px; height: 225px;"></div>
+          <span class="post-chart">${participant.getTotalAerobicHours(challengeYear)}&nbsp;hrs&nbsp;(${participant.getTotalDistance(challengeYear)}&nbsp;miles&nbsp;<span title="Run/walk: <fmt:formatNumber value="${participant.getTotalRunDistance(challengeYear)}"/> miles; Bike: <fmt:formatNumber value="${participant.getTotalBikeDistance(challengeYear)}"/> miles; Swim: <fmt:formatNumber value="${participant.getTotalSwimDistance(challengeYear)}"/> miles" class="glyphicon glyphicon-info-sign"></span>&nbsp;)<br/>Goal: ${participant.getTargetAerobicHours(challengeYear)} hrs</span>
+        </div>
+      </div>
+    </div>
